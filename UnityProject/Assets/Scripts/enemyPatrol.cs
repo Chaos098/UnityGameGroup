@@ -6,7 +6,7 @@ public class enemyPatrol : MonoBehaviour
 {
     public Transform player; // Reference to the player object
     private bool isPlayerDetected = false; // Flag to check if the player is detected
-    bool onDamaged;
+    bool onDamaged, isDead = false;
 
     public GameObject bullet, dustShoot;
     GameObject dustShootEffect;
@@ -17,6 +17,9 @@ public class enemyPatrol : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Transform currentPoint;
+
+    new Collider2D collider;
+    
 
     float hp = 100;
     public float speed;
@@ -29,6 +32,8 @@ public class enemyPatrol : MonoBehaviour
         anim = GetComponent<Animator>();
         currentPoint = pointB.transform;
         anim.SetBool("isMoving", true);
+
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -97,6 +102,17 @@ public class enemyPatrol : MonoBehaviour
         {
             anim.SetBool("isHurt", false);
         }
+
+
+        if (isDead)
+        {
+            anim.SetBool("isDead", true);
+            isPlayerDetected = false;
+            rb.velocity = new Vector2(0, 0);
+            GameObject gun = gameObject.transform.GetChild(1).gameObject;
+            gun.SetActive(false);
+            Destroy(gameObject, 1.5f);
+        }
     }
 
 
@@ -116,6 +132,14 @@ public class enemyPatrol : MonoBehaviour
     {
         onDamaged = true;
         hp -= 5;
+        Debug.Log(hp);
+
+
+        if (hp <= 0)
+        {
+            
+            isDead = true;
+        }
     }
 
 
