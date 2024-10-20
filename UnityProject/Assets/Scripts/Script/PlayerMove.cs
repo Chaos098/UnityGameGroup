@@ -5,13 +5,15 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
 
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f, hp = 100;
-    bool isGrounded, canDoubleJump, onDamaged;
+    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f, hp = 100, timer;
+    bool isGrounded, canDoubleJump, onDamaged, isDead = false;
     public bool ClimbingAllowed { get; set; }
 
     Animator anim;
     Rigidbody2D rb;
+    new Collider2D collider;
     public Transform groundCheck;
+    public Vector3 respawnPoint;
     public LayerMask groundLayer;
 
 
@@ -23,11 +25,13 @@ public class Cat : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
         float moveInput = Input.GetAxisRaw("Horizontal");
         dirX = moveInput * moveSpeed;
 
@@ -58,6 +62,25 @@ public class Cat : MonoBehaviour
 
 
         SetAnimationState();
+
+
+        // Player dead animation
+        if (isDead)
+        {
+            if (timer > 1f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 7f);
+                timer = 0;
+            }
+
+
+            collider.enabled = false;
+            rb.gravityScale = 3f;
+
+            //StartCoroutine(Respawn(1f));
+            
+        }
+
 
 
     }
@@ -124,14 +147,44 @@ public class Cat : MonoBehaviour
 
 
 
+
+
     }
 
 
     public void OnDamaged()
     {
-        hp -= 5;
+        Debug.Log(hp);
+        hp -= 20;
+
+        if (hp <= 0)
+        {
+            isDead = true;
+        }
         onDamaged = true;
     }
+
+    //IEnumerator Disabled(float duration)
+    //{
+    //    // Wait for 2 seconds
+    //    yield return new WaitForSeconds(duration);
+    //    gameObject.SetActive(false);
+
+    //}
+
+    //IEnumerator Respawn(float duration)
+    //{
+    //    hp = 100;
+    //    // Wait for 2 seconds
+    //    yield return new WaitForSeconds(duration);
+    //    //gameObject.SetActive(true);
+    //    transform.position = respawnPoint;
+    //    rb.velocity = new Vector2(0, 0);
+    //    collider.enabled = true;
+    //    rb.gravityScale = 1.5f;
+
+
+    //}
 
     private void OnTriggerStay2D(Collider2D collision)
     {
