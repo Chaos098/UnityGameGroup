@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject bullet;
-
-
     [SerializeField]
     GameObject dustShoot;
     GameObject dustShootEffect;
@@ -21,9 +17,10 @@ public class Shooter : MonoBehaviour
 
 
     public GameObject[] guns;
-    public GameObject weaponHolder;
-    public GameObject currentGun;
+    public GameObject currentGun, bullet, weaponHolder;
 
+
+    public Hashtable bulletInventory = new Hashtable();
 
     void Start()
     {
@@ -75,8 +72,6 @@ public class Shooter : MonoBehaviour
         //Take curren weapon animator
         gunEffect = currentGun.GetComponent<Animator>();
 
-
-
         // Change weapon
         SwapWeapon();
 
@@ -97,6 +92,8 @@ public class Shooter : MonoBehaviour
             }
 
 
+            Debug.Log(amountBullets[index]);
+
             // If shoot bullet decrease
             if (amountBullets[index] == 0)
             {
@@ -105,22 +102,16 @@ public class Shooter : MonoBehaviour
             else
             {
                 amountBullets[index] -= 1;
-            }
-
-
-            //Debug.Log(amountBullets[index]);
-            //Debug.Log(currentGun.name);
-
-
-            // Run animation of shooting
-            if (amountBullets[index] > 0)
-            {
                 shooting();
                 gunEffect.SetBool("isShooting", true);
 
                 //Take the Transform (GameObject) of "currentgun" of DustShoot
                 dustShootEffect = Instantiate(dustShoot, currentGun.transform.GetChild(2).transform.position, currentGun.transform.GetChild(2).transform.rotation);
             }
+
+
+            // Run animation of shooting
+            
         }
         else
         {
@@ -135,41 +126,50 @@ public class Shooter : MonoBehaviour
 
     }
 
+
+    /* -------Idea------- */
+    /* Check the number of child gameObject of player -> if it's more than total weapons in the present 
+     * -> enlarge the inventory of weapon and number of bullets for each weapon 
+     * 
+     */
+
     void PickUp()
     {
         if (weaponHolder.transform.childCount > totalWeapon)
         {
             totalWeapon = weaponHolder.transform.childCount;
 
+            // Create new weapon inventory
             guns = new GameObject[totalWeapon];
-
-            int[] tmpAmountBullets = new int[totalWeapon];
-
-            for (int i = 1; i < totalWeapon - 1; i++)
-            {
-                tmpAmountBullets[i] = amountBullets[i];
-            }
-
-
 
             for (int i = 1; i < totalWeapon; i++)
             {
                 guns[i] = weaponHolder.transform.GetChild(i).gameObject;
                 guns[i].SetActive(false);
             }
+
+            // Create temporary bullet inventory
+            int[] tmpAmountBullets = new int[totalWeapon];
+
+
+            for (int i = 1; i < totalWeapon - 1; i++)
+            {
+                tmpAmountBullets[i] = amountBullets[i];
+            }
+
+            // Check the additional weapon and add the number of bullet belong to itself
             switch (guns[totalWeapon - 1].name)
             {
-                case "Pistol":
-                    tmpAmountBullets[totalWeapon - 1] = 12;
+                case "Shotgun":
+                    tmpAmountBullets[totalWeapon - 1] = 6;
                     break;
                 case "Riffle":
                     tmpAmountBullets[totalWeapon - 1] = 24;
                     break;
-                case "Shotgun":
-                    tmpAmountBullets[totalWeapon - 1] = 9;
-                    break;
             }
 
+
+            // Transform the temporary bullet inventory to main bullet inventory
             amountBullets = new int[totalWeapon];
 
             for (int i = 1; i < totalWeapon; i++)
@@ -179,12 +179,67 @@ public class Shooter : MonoBehaviour
 
 
             guns[currentIndexWeapon].SetActive(true);
+            
             currentGun = guns[currentIndexWeapon];
         }
     }
 
+    
+    /* -----Idea----- */
+    /*
+     Check if the bullet inventory has the specific bullet yet
+        -> If not -> create new slot
+        -> If yes -> add more
+     */
+    public void AddBullet(string bulletName)
+    {
+        // Inventory for shotgun bullet
+        if (!bulletInventory.ContainsKey("ShotgunBullet"))
+        {
+            if (bulletName.Contains("ShotgunBullet"))
+            {
+                bulletInventory.Add("ShotgunBullet", 2);
+            }
+        }
+        else
+        {
+            if (bulletName.Contains("ShotgunBullet"))
+            {
+                int tmp = (int)bulletInventory["ShotgunBullet"] + 2;
+                bulletInventory["ShotgunBullet"] = tmp;
+            }
+        }
+
+
+        // Inventory for riffle bullet
+        if (!bulletInventory.ContainsKey("RiffleBullet"))
+        {
+            if (bulletName.Contains("RiffleBullet"))
+            {
+                bulletInventory.Add("RiffleBullet", 2);
+            }
+        }
+        else
+        {
+            if (bulletName.Contains("RiffleBullet"))
+            {
+                int tmp = (int)bulletInventory["RiffleBullet"] + 2;
+                bulletInventory["RiffleBullet"] = tmp;
+            }
+        }
+
+
+    }
+
+    /* -----Idea----- */
+    /*
+     Check the amount of that bullet 
+        -> If full -> exit 
+        -> If not -> check bullet inventory -> find bullet -> reload
+     */
     void Reload()
     {
+        int index = 0, redundant = 0;
         if (Input.GetKeyDown(KeyCode.R) && currentGun.name == "Pistol")
         {
             for (int i = 1; i < totalWeapon; i++)
@@ -197,14 +252,41 @@ public class Shooter : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.R) && currentGun.name == "Riffle")
+        if (Input.GetKeyDown(KeyCode.R) && currentGun.name == "Shotgun")
         {
             for (int i = 1; i < totalWeapon; i++)
             {
                 if (guns[i].name.Equals(currentGun.name))
                 {
-                    amountBullets[i] = 24;
+                    index = i;
                 }
+            }
+
+            if (amountBullets[index] < 6)
+            {
+                foreach (string nameBullet in bulletInventory.Keys)
+                {
+                    if (nameBullet.Contains(currentGun.name) && (int)bulletInventory[nameBullet] > 0)
+                    {
+                        amountBullets[index] += 2;
+                        if (amountBullets[index] > 6)
+                        {
+                            amountBullets[index] = 6;
+                            redundant = amountBullets[index] - 6;
+                        }
+                        else { redundant = 2; }
+                        int tmp = (int)bulletInventory[nameBullet] - redundant;
+                        bulletInventory[nameBullet] = tmp;
+
+                    }
+                    if (bulletInventory[nameBullet] == null || bulletInventory == null)
+                        Debug.Log("Out of bullet");
+
+                }
+            }
+            else if (amountBullets[index] >= 6)
+            {
+                Debug.Log("Bullet is full !" + amountBullets[index]);
             }
         }
     }
@@ -265,6 +347,8 @@ public class Shooter : MonoBehaviour
         }
     }
 
+
+
     void shooting()
     {
         GameObject shoot = Instantiate(bullet, currentGun.transform.GetChild(0).transform.position, currentGun.transform.GetChild(0).transform.rotation);
@@ -273,17 +357,3 @@ public class Shooter : MonoBehaviour
 
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

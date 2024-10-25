@@ -5,18 +5,17 @@ using UnityEngine;
 public class enemyPatrol : MonoBehaviour
 {
     public Transform player; // Reference to the player object
-    private bool isPlayerDetected = false, isDead = false; // Flag to check if the player is detected
-    bool onDamaged;
+    private bool onDamaged, isPlayerDetected = false, isDead = false; // Flag to check if the player is detected
 
-    public GameObject bullet, dustShoot;
     GameObject dustShootEffect;
-    public Transform startBullet;
+    public GameObject pointA, pointB, gun, bullet, dustShoot;
 
-
-    public GameObject pointA, pointB, gun;
     private Rigidbody2D rb;
     private Animator anim;
+
+    public Transform startBullet;
     private Transform currentPoint;
+    Vector3 localScale;
 
     float hp = 100;
     public float speed;
@@ -25,66 +24,33 @@ public class enemyPatrol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        localScale = transform.localScale;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         currentPoint = pointB.transform;
         anim.SetBool("isMoving", true);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         timer += Time.deltaTime;
 
         // Automatically move
-        if (currentPoint == pointB.transform)
+        if (!isPlayerDetected && !onDamaged)
         {
-            rb.velocity = new Vector2(speed, 0);
+            autoMoving();
         }
-        else 
+        else if (!isPlayerDetected && onDamaged)
         {
-            rb.velocity = new Vector2(-speed, 0);
-        }
 
-
-
-        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
-        {
             flip();
-            currentPoint = pointA.transform;
-        }
-
-        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
-        {
-            flip();
-            currentPoint = pointB.transform;
         }
 
 
 
         // Detecting player and automatically shoot
-        if (isPlayerDetected)
-        {
-
-            if (timer > 1f)
-            {
-                timer = 0;
-                shooting();
-                dustShootEffect = Instantiate(dustShoot, gun.transform.GetChild(2).transform.position, gun.transform.GetChild(2).transform.rotation);
-                Destroy(dustShootEffect, 1f);
-            }
-
-
-            
-            Destroy(dustShootEffect, 1f);
-            rb.velocity = new Vector2(0, 0);
-            anim.SetBool("isMoving", false);
-        }
-        else
-        {
-            anim.SetBool("isMoving", true);
-            gun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        }
+        detectedAnimation(isPlayerDetected);
 
 
         // Animation when get hurt
@@ -103,31 +69,31 @@ public class enemyPatrol : MonoBehaviour
         {
             StartCoroutine(DeadAnimation(1.5f));
         }
-    }
-
-
-    // Detecting Player
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.transform == player)
-        {
-            Debug.Log("Player detected!");
-            isPlayerDetected = true;
-
-        }
 
     }
+
+
+
 
     public void OnDamaged()
     {
         onDamaged = true;
-        Debug.Log(hp);
         hp -= 20;
 
         if (hp <= 0)
         {
             isDead = true;
         }
+    }
+
+    // Detecting Player
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.transform == player)
+        {
+            isPlayerDetected = true;
+        }
+
     }
 
 
@@ -151,16 +117,108 @@ public class enemyPatrol : MonoBehaviour
 
     private void flip()
     {
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        transform.localScale = localScale;
+        if (player.transform.position.x > gameObject.transform.position.x)
+        {
+            if (localScale.x < 0)
+            {
+                localScale.x *= -1;
+                transform.localScale = localScale;
+            }
+        }
+
+        if (player.transform.position.x < gameObject.transform.position.x)
+        {
+            if (localScale.x > 0)
+            {
+                localScale.x *= -1;
+                transform.localScale = localScale;
+            }
+        }
     }
+
+
+    private void detectedAnimation(bool isDetected)
+    {
+
+
+        if (isDetected)
+        {
+            flip();
+
+            if (timer > 1f)
+            {
+                timer = 0;
+                shooting();
+                dustShootEffect = Instantiate(dustShoot, gun.transform.GetChild(2).transform.position, gun.transform.GetChild(2).transform.rotation);
+                Destroy(dustShootEffect, 1f);
+            }
+
+            Destroy(dustShootEffect, 1f);
+            rb.velocity = new Vector2(0, 0);
+            anim.SetBool("isMoving", false);
+        }
+        else
+        {
+            anim.SetBool("isMoving", true);
+            gun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
+    }
+
+    private void autoMoving()
+    {
+        Vector3 localScale = transform.localScale;
+
+        // Moving from A -> B & B -> A
+        if (currentPoint == pointB.transform)
+        {
+            rb.velocity = new Vector2(speed, 0);
+        }
+        else
+        {
+            rb.velocity = new Vector2(-speed, 0);
+        }
+
+
+        // Rotate when reach edge point
+        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+        {
+            localScale.x *= -1;
+            transform.localScale = localScale;
+
+            currentPoint = pointA.transform;
+        }
+
+        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+        {
+            localScale.x *= -1;
+            transform.localScale = localScale;
+
+            currentPoint = pointB.transform;
+        }
+
+
+
+        // Back to movement line after being damaged
+        if (currentPoint == pointA.transform && localScale.x > 0)
+        {
+            localScale.x *= -1;
+            transform.localScale = localScale;
+        }
+
+        if (currentPoint == pointB.transform && localScale.x < 0)
+        {
+            localScale.x *= -1;
+            transform.localScale = localScale;
+        }
+    }
+
 
     void shooting()
     {
         GameObject shoot = Instantiate(bullet, gun.transform.GetChild(0).position, gun.transform.GetChild(0).rotation);
         Destroy(shoot, 3f);
     }
+
 
     IEnumerator DeadAnimation(float seconds)
     {
@@ -171,9 +229,6 @@ public class enemyPatrol : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-
-
-
 
 
     private void OnDrawGizmos()

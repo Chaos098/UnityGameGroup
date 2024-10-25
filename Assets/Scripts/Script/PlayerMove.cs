@@ -138,7 +138,7 @@ public class Cat : MonoBehaviour
 
     public void OnDamaged()
     {
-        hp -= 20;
+        hp -= 1;
         Debug.Log(hp);
         onDamaged = true;
 
@@ -155,7 +155,7 @@ public class Cat : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet"))
+        if (!collision.CompareTag("EnemyBullet"))
         {
             onDamaged = false;
         }
@@ -167,6 +167,8 @@ public class Cat : MonoBehaviour
 
         yield return new WaitForSeconds(seconds);
 
+        //gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        //gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
         rb.velocity = new Vector2(rb.velocity.x, -10f);
         collider.enabled = false;
 
@@ -178,7 +180,8 @@ public class Cat : MonoBehaviour
         hp = 100;
         isDead = false;
 
-
+        //gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        //gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(seconds);
 
         rb.velocity = new Vector2(0, 0);
