@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour
@@ -21,6 +22,12 @@ public class Shooter : MonoBehaviour
 
 
     public Hashtable bulletInventory = new Hashtable();
+
+    public Shooting shootingBar;
+    public Reload Reload_Bar;
+
+    public TextMeshProUGUI numberOfBullets;
+    public TextMeshProUGUI numberOfBulletsInventory;
 
     void Start()
     {
@@ -52,6 +59,9 @@ public class Shooter : MonoBehaviour
         guns[1].SetActive(true);
         currentGun = guns[1];
         currentIndexWeapon = 1;
+        numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
+        numberOfBulletsInventory.text = "MAX";
+
     }
 
 
@@ -98,10 +108,15 @@ public class Shooter : MonoBehaviour
             if (amountBullets[index] == 0)
             {
                 amountBullets[index] = 0;
+
+
+                shootingBar.updateBar(0);
             }
             else
             {
+                StartCoroutine(Reload(0.5f));
                 amountBullets[index] -= 1;
+                numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
                 shooting();
                 gunEffect.SetBool("isShooting", true);
 
@@ -115,6 +130,7 @@ public class Shooter : MonoBehaviour
         }
         else
         {
+
             gunEffect.SetBool("isShooting", false);
 
             Destroy(dustShootEffect, 1f);
@@ -181,6 +197,10 @@ public class Shooter : MonoBehaviour
             guns[currentIndexWeapon].SetActive(true);
             
             currentGun = guns[currentIndexWeapon];
+            numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
+
+
+            
         }
     }
 
@@ -246,7 +266,11 @@ public class Shooter : MonoBehaviour
             {
                 if (guns[i].name.Equals(currentGun.name))
                 {
-                    amountBullets[i] = 12;
+                    if (amountBullets[i] < 12)
+                    {
+                        StartCoroutine(WaitForReload(1f, i, currentGun.name));
+
+                    }
                 }
             }
         }
@@ -268,11 +292,17 @@ public class Shooter : MonoBehaviour
                 {
                     if (nameBullet.Contains(currentGun.name) && (int)bulletInventory[nameBullet] > 0)
                     {
-                        amountBullets[index] += 2;
+                        StartCoroutine(WaitForReload(2f, index, currentGun.name));
+
+                        if ((int)bulletInventory[nameBullet] >= 2)
+                            amountBullets[index] += 2;
+                        else
+                            amountBullets[index] += (int)bulletInventory[nameBullet];
+
                         if (amountBullets[index] > 6)
                         {
-                            amountBullets[index] = 6;
                             redundant = amountBullets[index] - 6;
+                            amountBullets[index] = 6;
                         }
                         else { redundant = 2; }
                         int tmp = (int)bulletInventory[nameBullet] - redundant;
@@ -290,7 +320,22 @@ public class Shooter : MonoBehaviour
             }
         }
     }
-    
+
+    IEnumerator WaitForReload(float seconds, int bulletIndex, string currentGunName)
+    {
+        Reload_Bar.updateBar(seconds);
+        yield return new WaitForSeconds(seconds);
+        switch (currentGunName)
+        {
+            case "Pistol":
+                amountBullets[bulletIndex] = 12;
+                break;
+        }
+        numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
+
+    }
+
+
 
 
 
@@ -304,6 +349,7 @@ public class Shooter : MonoBehaviour
                 currentIndexWeapon++;
                 guns[currentIndexWeapon].SetActive(true);
                 currentGun = guns[currentIndexWeapon];
+                numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
             }
             else
             {
@@ -311,6 +357,7 @@ public class Shooter : MonoBehaviour
                 currentIndexWeapon = 1;
                 guns[currentIndexWeapon].SetActive(true);
                 currentGun = guns[currentIndexWeapon];
+                numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
             }
         }
 
@@ -322,6 +369,7 @@ public class Shooter : MonoBehaviour
                 currentIndexWeapon--;
                 guns[currentIndexWeapon].SetActive(true);
                 currentGun = guns[currentIndexWeapon];
+                numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
             }
             else
             {
@@ -329,7 +377,21 @@ public class Shooter : MonoBehaviour
                 currentIndexWeapon = totalWeapon - 1;
                 guns[currentIndexWeapon].SetActive(true);
                 currentGun = guns[currentIndexWeapon];
+                numberOfBullets.text = amountBullets[currentIndexWeapon].ToString();
             }
+        }
+
+        if (currentGun.name.Equals("Pistol"))
+        {
+            numberOfBulletsInventory.text = "Max";
+        }
+        else if (currentGun.name.Equals("Shotgun"))
+        {
+            if (bulletInventory.ContainsKey("ShotgunBullet"))
+                numberOfBulletsInventory.text = bulletInventory["ShotgunBullet"].ToString();
+            else
+
+                numberOfBulletsInventory.text = "0";
         }
     }
 
@@ -355,5 +417,12 @@ public class Shooter : MonoBehaviour
         Destroy(shoot, 3f);
     }
 
-    
+    IEnumerator Reload(float seconds)
+    {
+        shootingBar.updateBar(0);
+
+        yield return new WaitForSeconds(seconds);
+
+        shootingBar.updateBar(1);
+    }
 }

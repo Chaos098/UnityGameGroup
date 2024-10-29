@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BulletItem : MonoBehaviour
 {
-    public GameObject gunholder;
-    public Transform pos;
     Animator anim;
 
 
@@ -28,7 +26,7 @@ public class BulletItem : MonoBehaviour
 
         }
 
-        if (collision.CompareTag("Player") && !Input.GetKeyDown(KeyCode.F))
+        if (collision.CompareTag("Player"))
         {
             anim.SetBool("isTouching", true);
         }

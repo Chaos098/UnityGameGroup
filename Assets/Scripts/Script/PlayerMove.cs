@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Cat : MonoBehaviour
 {
 
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f, hp = 100;
+    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f;
     bool isGrounded, canDoubleJump, onDamaged, isDead = false;
     public bool ClimbingAllowed { get; set; }
 
@@ -15,6 +16,13 @@ public class Cat : MonoBehaviour
     new Collider2D collider;
     public Transform groundCheck;
     public LayerMask groundLayer;
+    public TextMeshProUGUI numberOfFistKits;
+
+    public HP HP_Bar;
+
+    public float recentHP, maxHP = 100;
+    int numberOfFistAid = 0;
+
 
 
 
@@ -23,10 +31,14 @@ public class Cat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        numberOfFistKits.text = "0";
         checkpoint = transform.position;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+
+        recentHP = maxHP;
+        HP_Bar.updateHPBar(recentHP, maxHP);
     }
 
     // Update is called once per frame
@@ -128,23 +140,39 @@ public class Cat : MonoBehaviour
 
         if (isDead)
         {
-
-            StartCoroutine(DeadAnimation(0.4f));
+            StartCoroutine(DeadAnimation(0.2f));
             StartCoroutine(Respawn(1.4f));
-
         }
     }
 
 
     public void OnDamaged()
     {
-        hp -= 1;
-        Debug.Log(hp);
+        recentHP -= 5;
+        Debug.Log(recentHP);
+        HP_Bar.updateHPBar(recentHP, maxHP);
+        
         onDamaged = true;
 
-        if (hp <= 0)
+        if (recentHP <= 0)
         {
             isDead = true;
+        }
+    }
+
+    public void AddKits()
+    {
+        numberOfFistAid += 1;
+        numberOfFistKits.text = numberOfFistAid.ToString(); 
+
+    }
+
+    public void Health()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            recentHP = 100;
+            numberOfFistAid -= 1;
         }
     }
 
@@ -167,23 +195,17 @@ public class Cat : MonoBehaviour
 
         yield return new WaitForSeconds(seconds);
 
-        //gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        //gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
-        rb.velocity = new Vector2(rb.velocity.x, -10f);
         collider.enabled = false;
-
-
     }
 
     IEnumerator Respawn(float seconds)
     {
-        hp = 100;
+        recentHP = 100;
         isDead = false;
 
-        //gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        //gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(seconds);
 
+        HP_Bar.updateHPBar(recentHP, maxHP);
         rb.velocity = new Vector2(0, 0);
         transform.position = checkpoint;
         collider.enabled = true;

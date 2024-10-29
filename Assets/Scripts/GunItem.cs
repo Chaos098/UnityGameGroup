@@ -44,7 +44,7 @@ public class GunItem : MonoBehaviour
 
         }
         
-        if (collision.CompareTag("Player") && !Input.GetKeyDown(KeyCode.F))
+        if (collision.CompareTag("Player"))
         {
             anim.SetBool("isTouching", true);
         }

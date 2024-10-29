@@ -92,6 +92,7 @@ public class enemyPatrol : MonoBehaviour
         if (other.transform == player)
         {
             isPlayerDetected = true;
+            (gameObject.transform.GetChild(1).GetComponent("EnemyGunRotate") as MonoBehaviour).enabled = true;
         }
 
     }
@@ -111,7 +112,7 @@ public class enemyPatrol : MonoBehaviour
         if (other.transform == player)
         {
             isPlayerDetected = false;
-
+            (gameObject.transform.GetChild(1).GetComponent("EnemyGunRotate") as MonoBehaviour).enabled = false;
         }
     }
 
@@ -157,7 +158,7 @@ public class enemyPatrol : MonoBehaviour
             rb.velocity = new Vector2(0, 0);
             anim.SetBool("isMoving", false);
         }
-        else
+        else if (!isDead && !isDetected)
         {
             anim.SetBool("isMoving", true);
             gun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -224,6 +225,7 @@ public class enemyPatrol : MonoBehaviour
     {
         anim.SetBool("isDead", true);
         gun.SetActive(false);
+        isPlayerDetected = false;
 
         yield return new WaitForSeconds(seconds);
 
