@@ -7,17 +7,17 @@ TagManager:
   - ground
   - Bullet
   - Enemy
-  - EnemyBullet
+  - Boss
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - player
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Boss
+  - Enemy
   - 
   - 
   - 
@@ -44,4 +44,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 693794599
+    locked: 0
+  - name: Boss
+    uniqueID: 2603689949
     locked: 0
