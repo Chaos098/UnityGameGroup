@@ -485,7 +485,6 @@ GameObject:
   - component: {fileID: 7906076602471034809}
   - component: {fileID: 8421731752828876715}
   - component: {fileID: 2116103836288430287}
-  - component: {fileID: 5280352215406850481}
   - component: {fileID: 8801051522336656505}
   - component: {fileID: 3700003419091954274}
   - component: {fileID: 8078467361339640701}
@@ -592,50 +591,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!68 &5280352215406850481
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8562581173598356412}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 0.17725676, y: -0.23811403}
-  - {x: -0.2972932, y: -0.24082425}
-  - {x: -0.30997193, y: 0.36463886}
-  - {x: 0.18773165, y: 0.36197215}
-  - {x: 0.17807542, y: -0.24036062}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!95 &8801051522336656505
 Animator:
   serializedVersion: 5
@@ -673,6 +628,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  numberOfFistKits: {fileID: 0}
+  HP_Bar: {fileID: 0}
+  recentHP: 0
+  maxHP: 100
 --- !u!114 &8078467361339640701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,3 +650,7 @@ MonoBehaviour:
   currentGun: {fileID: 0}
   bullet: {fileID: 2101445043828903043, guid: 3d2726821794544ebb84f5063108bf8c, type: 3}
   weaponHolder: {fileID: 8562581173598356412}
+  shootingBar: {fileID: 0}
+  Reload_Bar: {fileID: 0}
+  numberOfBullets: {fileID: 0}
+  numberOfBulletsInventory: {fileID: 0}

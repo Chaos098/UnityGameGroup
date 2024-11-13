@@ -105,6 +105,11 @@ public class enemyPatrol : MonoBehaviour
         {
             onDamaged = false;
         }
+
+        if (collision.CompareTag("Player"))
+        {
+            rb.isKinematic = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
