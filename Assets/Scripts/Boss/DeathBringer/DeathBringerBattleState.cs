@@ -22,7 +22,7 @@ public class DeathBringerBattleState : BossState
 
         player = PlayerManager.instance.player.transform;
 
-        if (player.GetComponent<Cat>().isDead)
+        //if (player.GetComponent<Cat>().isDead)
             //stateMachine.ChangeState(enemy.moveState);
 
         stateTimer = enemy.battleTime;
@@ -42,7 +42,7 @@ public class DeathBringerBattleState : BossState
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
                 if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
+                    stateMachine.ChangeState(enemy.AttackState);
             }
         }
         else

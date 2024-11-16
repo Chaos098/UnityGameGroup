@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class DeathBringerIdleState : BossState
 {
-    private DeathBringerBoss Boss;
+    private DeathBringerBoss enemy;
     public DeathBringerIdleState(BossStateMachine stateMachine, Boss bossBase, string animBoolName,DeathBringerBoss DeathBringerBoss) : base(stateMachine, bossBase, animBoolName)
     {
-        this.Boss = DeathBringerBoss;
+        this.enemy = DeathBringerBoss;
     }
 
     public override void Enter()
     {
         base.Enter();
-        stateTimer = Boss.idleTime;
+        stateTimer = enemy.idleTime;
     }
 
     public override void Exit()
@@ -29,5 +29,9 @@ public class DeathBringerIdleState : BossState
     public override void Update()
     {
         base.Update();
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            stateMachine.ChangeState(enemy.TeleportState);
+        }
     }
 }
