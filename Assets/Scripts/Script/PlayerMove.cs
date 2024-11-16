@@ -1,5 +1,4 @@
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,20 +6,16 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
 
-    Vector2 checkpoint;
-
-
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f, hp = 100, timer;
+    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f;
     bool isGrounded, canDoubleJump, onDamaged;
     public bool isDead = false;
     public bool ClimbingAllowed { get; set; }
 
-
+    Vector2 checkpoint;
     Animator anim;
     Rigidbody2D rb;
     new Collider2D collider;
     public Transform groundCheck;
-
     public LayerMask groundLayer;
     public TextMeshProUGUI numberOfFistKits;
 
@@ -30,10 +25,6 @@ public class Cat : MonoBehaviour
     int numberOfFistAid = 0;
 
 
-    public Vector3 respawnPoint;
-    public LayerMask groundLayer;
-
-
 
 
 
@@ -41,25 +32,20 @@ public class Cat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         numberOfFistKits.text = "0";
         checkpoint = transform.position;
-        collider = GetComponent<Collider2D>();
-
-        recentHP = maxHP;
-        HP_Bar.updateHPBar(recentHP, maxHP);
 
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
 
+        recentHP = maxHP;
+        HP_Bar.updateHPBar(recentHP, maxHP);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        timer += Time.deltaTime;
         float moveInput = Input.GetAxisRaw("Horizontal");
         dirX = moveInput * moveSpeed;
 
@@ -90,28 +76,6 @@ public class Cat : MonoBehaviour
 
 
         SetAnimationState();
-
-
-
-
-        // Player dead animation
-        if (isDead)
-        {
-            if (timer > 1f)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, 7f);
-                timer = 0;
-            }
-
-
-            collider.enabled = false;
-            rb.gravityScale = 3f;
-
-            //StartCoroutine(Respawn(1f));
-            
-        }
-
-
 
 
     }
@@ -176,7 +140,6 @@ public class Cat : MonoBehaviour
         }
 
 
-
         if (isDead)
         {
             StartCoroutine(DeadAnimation(0.2f));
@@ -185,19 +148,32 @@ public class Cat : MonoBehaviour
     }
 
 
-    // public void OnDamaged()
-    // {
-    //     recentHP -= 5;
-    //     Debug.Log(recentHP);
-    //     HP_Bar.updateHPBar(recentHP, maxHP);
-        
-    //     onDamaged = true;
+    //public void OnDamaged()
+    //{
+    //    recentHP -= 5;
+    //    Debug.Log(recentHP);
+    //    HP_Bar.updateHPBar(recentHP, maxHP);
 
-    //     if (recentHP <= 0)
-    //     {
-    //         isDead = true;
-    //     }
-    // }
+    //    onDamaged = true;
+
+    //    if (recentHP <= 0)
+    //    {
+    //        isDead = true;
+    //    }
+    //}
+
+    public void OnDamaged(float Damage)
+    {
+        Debug.Log(recentHP);
+        recentHP -= Damage;
+
+        if (recentHP <= 0)
+        {
+            isDead = true;
+        }
+        onDamaged = true;
+    }
+
 
     public void AddKits()
     {
@@ -223,56 +199,10 @@ public class Cat : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (!collision.CompareTag("EnemyBullet"))
-
-
-
-
-    }
-
-
-    public void OnDamaged(float Damage)
-    {
-        Debug.Log(hp);
-        hp -= Damage;
-
-        if (hp <= 0)
-        {
-            isDead = true;
-        }
-        onDamaged = true;
-    }
-
-    //IEnumerator Disabled(float duration)
-    //{
-    //    // Wait for 2 seconds
-    //    yield return new WaitForSeconds(duration);
-    //    gameObject.SetActive(false);
-
-    //}
-
-    //IEnumerator Respawn(float duration)
-    //{
-    //    hp = 100;
-    //    // Wait for 2 seconds
-    //    yield return new WaitForSeconds(duration);
-    //    //gameObject.SetActive(true);
-    //    transform.position = respawnPoint;
-    //    rb.velocity = new Vector2(0, 0);
-    //    collider.enabled = true;
-    //    rb.gravityScale = 1.5f;
-
-
-    //}
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (!collision.CompareTag("Bullet"))
-
         {
             onDamaged = false;
         }
     }
-
 
     IEnumerator DeadAnimation(float seconds)
     {
@@ -302,9 +232,4 @@ public class Cat : MonoBehaviour
 
 
 
-
-
 }
-
-
-

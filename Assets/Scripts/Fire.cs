@@ -28,21 +28,7 @@ public class Fire : MonoBehaviour
         if (collision.CompareTag("Player") || collision.CompareTag("Enemy"))
         {
             Destroy(gameObject);
-
-            Cat player = collision.GetComponent<Cat>();
-            if (player != null)
-            {
-                player.OnDamaged(20);
-            }
-        }
-        if (collision.CompareTag("Boss"))
-        {
-            Destroy(gameObject);
-            EnemyStats stats = collision.GetComponent<EnemyStats>();
-            if(stats != null)
-            {
-                stats.TakeDamage(25);
-            }
+            collision.SendMessageUpwards("OnDamaged");
         }
     }
 }
