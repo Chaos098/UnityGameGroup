@@ -1070,7 +1070,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -3.5269756, y: 0.095841646}
+  m_Offset: {x: -6.180229, y: 1.0223742}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1081,7 +1081,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 22.008492, y: 11.312565}
+  m_Size: {x: 16.701984, y: 9.459499}
   m_EdgeRadius: 0
 --- !u!4 &447325643
 Transform:
@@ -1092,7 +1092,7 @@ Transform:
   m_GameObject: {fileID: 447325641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.71, y: -0.53, z: 0.025244372}
+  m_LocalPosition: {x: -28.7, y: 0.5, z: 0.025244372}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1328,7 +1328,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.18, y: 1.9, z: -10}
+  m_LocalPosition: {x: -28.53, y: 1.91, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2025,7 +2025,7 @@ GameObject:
   - component: {fileID: 920162144}
   - component: {fileID: 920162143}
   - component: {fileID: 920162142}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3173,7 +3173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e948c83c51a2f0245bbf3fa356eeb8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popUpTextPrefab: {fileID: 0}
   flashDuration: 0.3
   hitMat: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   hitFx: {fileID: 1368953833}
@@ -3242,7 +3241,7 @@ MonoBehaviour:
   knockbackOffset: {x: 0.5, y: 1}
   knockbackDuration: 0
   attackCheck: {fileID: 451044155}
-  attackCheckRadius: 0.5
+  attackCheckRadius: 0.68
   groundCheck: {fileID: 1128490805}
   groundCheckDistance: 0.4
   wallCheck: {fileID: 1385210760}
@@ -3260,8 +3259,8 @@ MonoBehaviour:
   idleTime: 0
   battleTime: 0
   agroDistance: 2
-  attackDistance: 0
-  attackCooldown: 0
+  attackDistance: 1.84
+  attackCooldown: 0.2
   minAttackCooldown: 1
   maxAttackCooldown: 2
   lastTimeAttacked: 0
@@ -3338,7 +3337,7 @@ Transform:
   m_GameObject: {fileID: 1368953833}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.23, y: -0.01, z: 0}
+  m_LocalPosition: {x: -31.6, y: -0.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3546,7 +3545,7 @@ Transform:
   m_GameObject: {fileID: 1407466774}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.18, y: 1.9, z: -10}
+  m_LocalPosition: {x: -28.53, y: 1.91, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5151,11 +5150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7906076602471034809, guid: 20007e1f203964c5e877942111718f94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -33.18
+      value: -28.53
       objectReference: {fileID: 0}
     - target: {fileID: 7906076602471034809, guid: 20007e1f203964c5e877942111718f94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 7906076602471034809, guid: 20007e1f203964c5e877942111718f94, type: 3}
       propertyPath: m_LocalPosition.z

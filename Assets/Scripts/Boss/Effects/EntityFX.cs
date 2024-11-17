@@ -8,12 +8,6 @@ public class EntityFX : MonoBehaviour
     protected Shooter player;
     protected SpriteRenderer sr;
 
-    [Header("Pop Up Text")]
-    [SerializeField] private GameObject popUpTextPrefab;
-
-
-
-
 
     [Header("Flash FX")]
     [SerializeField] private float flashDuration;
@@ -34,8 +28,7 @@ public class EntityFX : MonoBehaviour
         player = PlayerManager.instance.player;
 
         originalMat = sr.material;
-
-
+        myHealthBar = GetComponentInChildren<UI_HealthBar>().gameObject;
     }
 
 

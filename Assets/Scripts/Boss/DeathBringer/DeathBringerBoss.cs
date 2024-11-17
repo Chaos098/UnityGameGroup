@@ -21,6 +21,7 @@ public class DeathBringerBoss : Boss
     protected override void Awake()
     {
         base.Awake();
+        SetupDefailtFacingDir(-1);
         IdleState = new DeathBringerIdleState(stateMachine,this,"Idle",this);
         AttackState = new DeathBringerAttackState(stateMachine, this, "Attack", this);
         DeadState = new DeathBringerDeadState(stateMachine, this, "Idle", this);

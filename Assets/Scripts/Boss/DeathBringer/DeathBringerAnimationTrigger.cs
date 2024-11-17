@@ -6,6 +6,7 @@ public class DeathBringerAnimationTrigger : MonoBehaviour
 {
     // Start is called before the first frame update
     Boss boss => GetComponentInParent<Boss>();
+    DeathBringerBoss DeathBringerBoss => GetComponentInParent<DeathBringerBoss>();
     private void AnimationTrigger()
     {
         boss.AnimationFinishTrigger();
@@ -31,4 +32,8 @@ public class DeathBringerAnimationTrigger : MonoBehaviour
 
     private void OpenCounterWindow() => boss.OpenCounterAttackWindow();
     private void CloseCounterWindow() => boss.CloseCounterAttackWindow();
+    private void Relocate() => DeathBringerBoss.FindPosition();
+
+    private void MakeInvisible() => DeathBringerBoss.fx.MakeTransprent(true);
+    private void MakeVisible() => DeathBringerBoss.fx.MakeTransprent(false);
 }
