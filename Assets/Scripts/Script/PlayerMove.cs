@@ -6,7 +6,7 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
 
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f;
+    float dirX, dirY, moveSpeed = 3f, jumpforce = 6.2f, groundCheckRadius = 0.2f;
     bool isGrounded, canDoubleJump, onDamaged;
     public bool isDead = false;
     public bool ClimbingAllowed { get; set; }

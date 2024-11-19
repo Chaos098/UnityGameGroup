@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6758860718085185416}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StartDustShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 1709471816811995486}
   - component: {fileID: 2256551613965324543}
   - component: {fileID: 7657342832915366075}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
@@ -155,7 +155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4666878145042728753}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StartPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 5138034134749147460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.303, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0.073, y: 0.05, z: 0}
   m_LocalScale: {x: 1.5323559, y: 1.5323559, z: 1.9242643}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -309,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7085097239296359890}
   - component: {fileID: 2740331855536800552}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NewPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6374447934232995183}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletEffectPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 8551124105455922279}
   - component: {fileID: 4921894109165181961}
   - component: {fileID: 5039757776626226675}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LadderDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,11 +484,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7906076602471034809}
   - component: {fileID: 8421731752828876715}
+  - component: {fileID: 6053085858100892290}
   - component: {fileID: 2116103836288430287}
   - component: {fileID: 8801051522336656505}
   - component: {fileID: 3700003419091954274}
   - component: {fileID: 8078467361339640701}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -564,6 +565,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &6053085858100892290
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562581173598356412}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.040190756, y: 0.09219748}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.4, y: 0.34}
+    oldSize: {x: 2, y: 2}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.54605615, y: 0.69446635}
+  m_EdgeRadius: 0
 --- !u!50 &2116103836288430287
 Rigidbody2D:
   serializedVersion: 4
@@ -624,6 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d54273fa373647b9871c8217dc71fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
   groundCheck: {fileID: 1709471816811995486}
   groundLayer:
     serializedVersion: 2
