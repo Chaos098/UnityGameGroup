@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Enemy
   - EnemyBullet
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -17,10 +18,10 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
-  - 
-  - 
-  - 
+  - Boss
+  - teleportArea
+  - item
+  - Enemy
   - 
   - 
   - 

@@ -22,7 +22,7 @@ public class DeathBringerBattleState : BossState
 
         player = PlayerManager.instance.player.transform;
 
-        if (player.GetComponent<Cat>().isDead)
+        //if (player.GetComponent<Cat>().isDead)
             //stateMachine.ChangeState(enemy.moveState);
 
         stateTimer = enemy.battleTime;
@@ -33,8 +33,6 @@ public class DeathBringerBattleState : BossState
     {
         base.Update();
 
-        enemy.anim.SetFloat("xVelocity", enemy.rb.velocity.x);
-
         if (enemy.IsPlayerDetected())
         {
             stateTimer = enemy.battleTime;
@@ -42,19 +40,8 @@ public class DeathBringerBattleState : BossState
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
                 if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
+                    stateMachine.ChangeState(enemy.AttackState);
             }
-        }
-        else
-        {
-            if (flippedOnce == false)
-            {
-                flippedOnce = true;
-                enemy.Flip();
-            }
-
-            if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 7) { }
-                //stateMachine.ChangeState(enemy.idleState);
         }
 
         float distanceToPlayerX = Mathf.Abs(player.position.x - enemy.transform.position.x);
