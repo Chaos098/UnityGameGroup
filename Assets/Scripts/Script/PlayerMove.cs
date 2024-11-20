@@ -21,7 +21,7 @@ public class Cat : MonoBehaviour
 
     public HP HP_Bar;
 
-    public float recentHP, maxHP = 100;
+    public float recentHP, maxHP;
     int numberOfFistAid = 0;
 
 
@@ -77,6 +77,8 @@ public class Cat : MonoBehaviour
 
         SetAnimationState();
 
+
+        HP_Bar.updateHPBar(recentHP, maxHP);
 
     }
 
@@ -164,8 +166,9 @@ public class Cat : MonoBehaviour
 
     public void OnDamaged(float Damage)
     {
-        Debug.Log(recentHP);
+        
         recentHP -= Damage;
+        Debug.Log(recentHP);
 
         if (recentHP <= 0)
         {
@@ -215,7 +218,7 @@ public class Cat : MonoBehaviour
 
     IEnumerator Respawn(float seconds)
     {
-        recentHP = 100;
+        recentHP = 300;
         isDead = false;
 
         yield return new WaitForSeconds(seconds);

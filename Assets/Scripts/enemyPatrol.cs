@@ -35,27 +35,33 @@ public class enemyPatrol : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
+        Debug.Log("localScale" + localScale.x);
 
         // Automatically move
         if (!isPlayerDetected && !onDamaged)
         {
             autoMoving();
         }
-        else if (!isPlayerDetected && onDamaged)
-        {
 
-            flip();
+
+
+        if (isPlayerDetected)
+        {
+            detectedAnimation();
         }
 
 
 
-        // Detecting player and automatically shoot
-        detectedAnimation(isPlayerDetected);
-
+        if (!isDead && !isPlayerDetected)
+        {
+            anim.SetBool("isMoving", true);
+            gun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
 
         // Animation when get hurt
         if (onDamaged)
         {
+            detectedAnimation();
             anim.SetBool("isHurt", true);
         }
 
@@ -75,11 +81,13 @@ public class enemyPatrol : MonoBehaviour
 
 
 
-    public void OnDamaged()
+    public void OnDamaged(float Damage)
     {
         onDamaged = true;
-        hp -= 20;
+        isPlayerDetected = true;
 
+        hp -= Damage;
+        Debug.Log("enemy" + hp);
         if (hp <= 0)
         {
             isDead = true;
@@ -109,6 +117,7 @@ public class enemyPatrol : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             rb.isKinematic = true;
+            isPlayerDetected = true;
         }
     }
 
@@ -143,31 +152,21 @@ public class enemyPatrol : MonoBehaviour
     }
 
 
-    private void detectedAnimation(bool isDetected)
+    private void detectedAnimation()
     {
+        flip();
 
-
-        if (isDetected)
+        if (timer > 1f)
         {
-            flip();
-
-            if (timer > 1f)
-            {
-                timer = 0;
-                shooting();
-                dustShootEffect = Instantiate(dustShoot, gun.transform.GetChild(2).transform.position, gun.transform.GetChild(2).transform.rotation);
-                Destroy(dustShootEffect, 1f);
-            }
-
+            timer = 0;
+            shooting();
+            dustShootEffect = Instantiate(dustShoot, gun.transform.GetChild(2).transform.position, gun.transform.GetChild(2).transform.rotation);
             Destroy(dustShootEffect, 1f);
-            rb.velocity = new Vector2(0, 0);
-            anim.SetBool("isMoving", false);
         }
-        else if (!isDead && !isDetected)
-        {
-            anim.SetBool("isMoving", true);
-            gun.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        }
+
+        Destroy(dustShootEffect, 1f);
+        rb.velocity = new Vector2(0, 0);
+        anim.SetBool("isMoving", false);
     }
 
     private void autoMoving()

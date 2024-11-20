@@ -100,7 +100,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.26012036, y: 0}
+  m_Offset: {x: 0.2601204, y: 0.18301111}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -111,7 +111,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9421718, y: 1}
+  m_Size: {x: 1.9421718, y: 2.610498}
   m_EdgeRadius: 0
 --- !u!1 &3581837985020250917
 GameObject:
@@ -169,7 +169,7 @@ Transform:
   m_GameObject: {fileID: 3949022161362149476}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.2, y: -1.6, z: 0}
+  m_LocalPosition: {x: 16.77, y: -1.6, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -205,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 4576291484065224140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.07, y: -1.28, z: 0}
+  m_LocalPosition: {x: 20.07, y: -1.25, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -355,7 +355,7 @@ MonoBehaviour:
   bullet: {fileID: 2101445043828903043, guid: 3ed01cb4af762457db15a8183c0f6988, type: 3}
   dustShoot: {fileID: 5511511323485214282, guid: 9adecceff0b904eebb1a5aa0c50c0a66, type: 3}
   startBullet: {fileID: 8344716894487943496}
-  speed: 1.5
+  speed: 1
 --- !u!95 &1549839051855702796
 Animator:
   serializedVersion: 5
@@ -433,7 +433,7 @@ Transform:
   m_GameObject: {fileID: 6588950012584287722}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20, y: -1.6, z: 0}
+  m_LocalPosition: {x: 20.59, y: -1.59, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -467,7 +467,7 @@ Transform:
   m_GameObject: {fileID: 6610811137971722341}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07, y: -0.14, z: 0}
+  m_LocalPosition: {x: -0.021, y: -0.14, z: 0}
   m_LocalScale: {x: 1.532356, y: 1.532356, z: 2.2985337}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -556,7 +556,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6610811137971722341}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 598dcc7f7c6864cf8bdb2325aad86e92, type: 3}
   m_Name: 
@@ -588,7 +588,7 @@ Transform:
   m_GameObject: {fileID: 7224675205369208040}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.202, y: 0.011, z: 0}
+  m_LocalPosition: {x: 0.52, y: 0.011, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -604,7 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2249498967106111764}
   m_Layer: 11
-  m_Name: Enemy
+  m_Name: Enemy_Bald
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

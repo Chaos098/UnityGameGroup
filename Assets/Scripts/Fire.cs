@@ -5,7 +5,7 @@ using UnityEngine;
 public class Fire : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float firespeed;
+    public float firespeed, damage;
     public GameObject dustShootEffect;
     private GameObject dustShoot;
 
@@ -28,7 +28,7 @@ public class Fire : MonoBehaviour
         if (collision.CompareTag("Player") || collision.CompareTag("Enemy"))
         {
             Destroy(gameObject);
-            collision.SendMessageUpwards("OnDamaged");
+            collision.SendMessageUpwards("OnDamaged", damage);
         }
     }
 }
