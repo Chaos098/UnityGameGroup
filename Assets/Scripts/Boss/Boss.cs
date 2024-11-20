@@ -22,7 +22,7 @@ public class Boss : Entity
 
     [Header("Attack info")]
     public float agroDistance = 2;
-    public float attackDistance = 2;
+    public float attackDistance;
     public float attackCooldown;
     public float minAttackCooldown = 1;
     public float maxAttackCooldown = 2;
