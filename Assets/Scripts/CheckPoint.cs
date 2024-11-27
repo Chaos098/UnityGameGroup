@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
-    Cat playerController;
+    PlayerMove playerController;
 
     private void Awake()
     {
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<Cat>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

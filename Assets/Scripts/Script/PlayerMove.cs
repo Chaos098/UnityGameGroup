@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Cat : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
 
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 6.2f, groundCheckRadius = 0.2f;
+    float dirX, dirY, moveInput, moveSpeed = 3f, jumpforce = 6.2f, groundCheckRadius = 0.2f;
     bool isGrounded, canDoubleJump, onDamaged;
-    public bool isDead = false;
+    public bool isDead = false, isOnPlatform;
     public bool ClimbingAllowed { get; set; }
 
     Vector2 checkpoint;
     Animator anim;
     Rigidbody2D rb;
+    public Rigidbody2D platformRb;
     new Collider2D collider;
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -25,11 +26,13 @@ public class Cat : MonoBehaviour
     int numberOfFistAid = 0;
 
 
+    public float dashBoost;
+    //public float dashTime;
+    //bool isDashing = false, canDash = true;
 
 
 
 
-    // Use this for initialization
     void Start()
     {
         numberOfFistKits.text = "0";
@@ -46,32 +49,47 @@ public class Cat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        //if (isDashing)
+        //{
+        //    return;
+        //}
+
+
+        moveInput = Input.GetAxisRaw("Horizontal");
         dirX = moveInput * moveSpeed;
 
-
-        // Check if player is grounded
+        /*** Check if player is grounded ***/
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
 
-        // Player double jump
+        /*** Player double jump ***/
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
             Jump();
             canDoubleJump = true;
+            rb.gravityScale = 1.5f;
         }
         else if (canDoubleJump && Input.GetButtonDown("Jump"))
         {
             Jump();
             canDoubleJump = false;
+            rb.gravityScale = 1.5f;
         }
 
 
-        //Player Climb
+        /*** Player Climb ***/
         if (ClimbingAllowed)
         {
             dirY = Input.GetAxisRaw("Vertical") * moveSpeed * 1.5f;
         }
+
+        /*** Player Dash ***/
+
+        //if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        //{
+        //    StartCoroutine(Dash());
+        //}
+
 
 
 
@@ -86,10 +104,23 @@ public class Cat : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(dirX, rb.velocity.y);
+        //if (isDashing)
+        //{
+        //    return;
+        //}
 
 
-        // Player climb
+        if (isOnPlatform)
+        {
+            rb.velocity = new Vector2(dirX+platformRb.velocity.x, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(dirX, rb.velocity.y);
+        }
+
+
+        /*** Player climb ***/
         if (ClimbingAllowed)
         {
             rb.isKinematic = true;
@@ -100,6 +131,8 @@ public class Cat : MonoBehaviour
             rb.isKinematic = false;
             rb.velocity = new Vector2(dirX, rb.velocity.y);
         }
+
+
     }
 
 
@@ -150,25 +183,10 @@ public class Cat : MonoBehaviour
     }
 
 
-    //public void OnDamaged()
-    //{
-    //    recentHP -= 5;
-    //    Debug.Log(recentHP);
-    //    HP_Bar.updateHPBar(recentHP, maxHP);
-
-    //    onDamaged = true;
-
-    //    if (recentHP <= 0)
-    //    {
-    //        isDead = true;
-    //    }
-    //}
-
     public void OnDamaged(float Damage)
     {
         
         recentHP -= Damage;
-        Debug.Log(recentHP);
 
         if (recentHP <= 0)
         {
@@ -189,7 +207,7 @@ public class Cat : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            recentHP = 100;
+            recentHP = maxHP;
             numberOfFistAid -= 1;
         }
     }
@@ -207,13 +225,23 @@ public class Cat : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Traps"))
+        {
+            isDead = true;
+        }
+    }
+
     IEnumerator DeadAnimation(float seconds)
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+        rb.velocity = new Vector2(rb.velocity.x, jumpforce + 0.8f);
 
         yield return new WaitForSeconds(seconds);
-
         collider.enabled = false;
+        yield return new WaitForSeconds(seconds);
+        rb.gravityScale = 50;
+
     }
 
     IEnumerator Respawn(float seconds)
@@ -229,6 +257,22 @@ public class Cat : MonoBehaviour
         collider.enabled = true;
     }
 
+
+    
+    //IEnumerator Dash()
+    //{
+    //    canDash = false;
+    //    isDashing = true;
+    //    float originalGravity = rb.gravityScale;
+    //    rb.gravityScale = 0f;
+    //    rb.velocity = new Vector2(dashBoost * moveInput, dirY);
+
+    //    yield return new WaitForSeconds(dashTime);
+    //    rb.gravityScale = originalGravity;
+    //    isDashing = false;
+    //    yield return new WaitForSeconds(dashingCooldown);
+    //    canDash = true;
+    //}
 
 
 
