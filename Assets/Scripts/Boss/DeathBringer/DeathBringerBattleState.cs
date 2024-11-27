@@ -32,11 +32,17 @@ public class DeathBringerBattleState : BossState
     public override void Update()
     {
         base.Update();
+        if (enemy.CanJump())
+        {
+            enemy.SetVelocity(enemy.rb.velocity.x, 7);
+        }
+        if (stateTimer < 0)
+        {
+            stateMachine.ChangeState(enemy.TeleportState);
+        }
 
         if (enemy.IsPlayerDetected())
         {
-            stateTimer = enemy.battleTime;
-
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
                 if (CanAttack())

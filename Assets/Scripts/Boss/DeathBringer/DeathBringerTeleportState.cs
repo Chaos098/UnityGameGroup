@@ -20,7 +20,11 @@ public class DeathBringerTeleportState : BossState
         base.Update();
         if(triggerCalled)
         {
-            stateMachine.ChangeState(enemy.BattleState);
+            if (enemy.CanDoSpellCast())
+            {
+                stateMachine.ChangeState(enemy.SpellCastState);
+            }
+            else { stateMachine.ChangeState(enemy.BattleState); }
         }
     }
     public override void Exit()

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Boss : Entity
 {
     [SerializeField] protected LayerMask whatIsPlayer;
-
+    [SerializeField] protected Transform jumpCheck;
 
     [Header("Stunned info")]
     public float stunDuration = 1;
@@ -15,7 +15,7 @@ public class Boss : Entity
     [SerializeField] protected GameObject counterImage;
 
     [Header("Move info")]
-    public float moveSpeed = 1.5f;
+    public float moveSpeed = 2.5f;
     public float idleTime = 2;
     public float battleTime = 7;
     private float defaultMoveSpeed;
@@ -26,11 +26,12 @@ public class Boss : Entity
     public float attackCooldown;
     public float minAttackCooldown = 1;
     public float maxAttackCooldown = 2;
+    [SerializeField] private float jumpCheckDistance;
     [HideInInspector] public float lastTimeAttacked;
 
     public BossStateMachine stateMachine { get; private set; }
     public EntityFX fx { get; private set; }
-    private Shooter player;
+    private Cat player;
     public string lastAnimBoolName { get; private set; }
     protected override void Awake()
     {
@@ -50,7 +51,6 @@ public class Boss : Entity
     protected override void Update()
     {
         base.Update();
-
 
         stateMachine.currentState.Update();
 
@@ -143,11 +143,34 @@ public class Boss : Entity
 
         return playerDetected;
     }
+    public virtual bool CanJump()
+    {
+        Vector2 direction = Vector2.right * facingDir;
+        RaycastHit2D wallDetected = Physics2D.Raycast(wallCheck.position, direction, 0.8f, whatIsGround);
+        RaycastHit2D jumpDetected = Physics2D.Raycast(jumpCheck.position, direction, 0.8f, whatIsGround);
+
+        // V? tia Raycast trong c?nh ?? debug
+        Debug.DrawRay(wallCheck.position, direction * 0.8f, Color.yellow);
+        Debug.DrawRay(jumpCheck.position, direction * 0.8f, Color.red);
+
+        // Log thông tin raycast
+        //Debug.Log($"Wall Detected: {wallDetected.collider != null}, Jump Detected: {jumpDetected.collider != null}");
+
+        if (wallDetected && !jumpDetected)
+        {
+            //Debug.Log("Can Jump: True");
+            return true;
+        }
+        //Debug.Log("Can Jump: False");
+        return false;
+    }
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistance * facingDir, transform.position.y));
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(jumpCheck.position,new Vector3(jumpCheck.position.x + jumpCheckDistance * facingDir, jumpCheck.position.y));
     }
 }

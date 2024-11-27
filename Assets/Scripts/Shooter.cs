@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Shooter : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField]
     GameObject dustShoot;
@@ -102,7 +102,7 @@ public class Shooter : MonoBehaviour
             }
 
 
-            Debug.Log(amountBullets[index]);
+            //Debug.Log(amountBullets[index]);
 
             // If shoot bullet decrease
             if (amountBullets[index] == 0)

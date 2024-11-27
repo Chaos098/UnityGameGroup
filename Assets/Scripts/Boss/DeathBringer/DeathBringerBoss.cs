@@ -15,9 +15,29 @@ public class DeathBringerBoss : Boss
     public DeathBringerSpellCastState SpellCastState { get; internal set; }
     public DeathBringerTeleportState TeleportState { get; internal set; }
     #endregion
+    public bool bossFightBegun;
+    [Header("CastSpellDetail")]
+    [SerializeField] private GameObject SpellPrefar;
+    public int amountOfSpells;
+    public float spellCooldown;
+    public float lastTimeCast;
+    [SerializeField] private float spellStateCooldown;
+    [SerializeField] private Vector2 spellOffset;
+
     [Header("teleport detail")]
     [SerializeField] private BoxCollider2D arena;
     [SerializeField] private Vector2 surroundingCheckSize;
+    public float chanceToTeleport = 30;
+    public float defaultChanceToTeleport;
+
+
+    [Header("Damage Settings")]
+    [SerializeField] private int damageAmount = 10;
+    [SerializeField] private Vector2 damageAreaSize = new Vector2(2f, 2f);
+    [SerializeField] private Vector2 damageAreaOffset = Vector2.zero;
+    [SerializeField] private float damageInterval = 1f; // Time between damages
+    private float lastDamageTime;
+
     protected override void Awake()
     {
         base.Awake();
@@ -39,6 +59,7 @@ public class DeathBringerBoss : Boss
     protected override void Update()
     {
         base.Update();
+        CheckForPlayerOverlap();
     }
     public override void Die()
     {
@@ -70,6 +91,61 @@ public class DeathBringerBoss : Boss
 
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - GroundBelow().distance));
         Gizmos.DrawWireCube(transform.position, surroundingCheckSize);
+
+        Gizmos.color = Color.red;
+        Vector2 position = (Vector2)transform.position + damageAreaOffset;
+        Gizmos.DrawWireCube(position, damageAreaSize);
+    }
+    public bool CanTeleport()
+    {
+        if (Random.Range(1, 100) <= chanceToTeleport)
+        {
+            chanceToTeleport = defaultChanceToTeleport;
+            return true;
+        }
+        return false;
+    }
+    public bool CanDoSpellCast()
+    {
+        if (Time.time >= lastTimeCast + spellStateCooldown)
+        {
+            lastTimeCast = Time.time;
+            return true;
+        }
+        return false;
     }
 
+    public void CastSpell()
+    {
+        Cat player = PlayerManager.instance.player;
+
+        float xOffset = 0;
+
+        if (player.rb.velocity.x != 0)
+            xOffset = player.dirX * spellOffset.x;
+
+        Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellOffset.y);
+
+        GameObject newSpell = Instantiate(SpellPrefar, spellPosition, Quaternion.identity);
+        newSpell.GetComponent<DeathBringerSpell_Controller>().SetupSpell(stats);
+    }
+
+    private void CheckForPlayerOverlap()
+    {
+        if (Time.time < lastDamageTime + damageInterval)
+            return;
+
+        Vector2 position = (Vector2)transform.position + damageAreaOffset;
+        Collider2D hit = Physics2D.OverlapBox(position, damageAreaSize, 0f, whatIsPlayer);
+
+        if (hit != null)
+        {
+            Cat player = hit.GetComponent<Cat>();
+            if (player != null)
+            {
+                player.OnDamaged(damageAmount);
+                lastDamageTime = Time.time;
+            }
+        }
+    }
 }

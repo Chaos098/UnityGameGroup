@@ -6,14 +6,15 @@ using UnityEngine;
 public class Cat : MonoBehaviour
 {
 
-    float dirX, dirY, moveSpeed = 3f, jumpforce = 5f, groundCheckRadius = 0.2f;
+    public float dirX; 
+    float dirY, moveSpeed = 3f, jumpforce = 6.2f, groundCheckRadius = 0.2f;
     bool isGrounded, canDoubleJump, onDamaged;
     public bool isDead = false;
     public bool ClimbingAllowed { get; set; }
 
     Vector2 checkpoint;
     Animator anim;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     new Collider2D collider;
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -21,7 +22,7 @@ public class Cat : MonoBehaviour
 
     public HP HP_Bar;
 
-    public float recentHP, maxHP = 100;
+    public float recentHP, maxHP;
     int numberOfFistAid = 0;
 
 
@@ -77,6 +78,8 @@ public class Cat : MonoBehaviour
 
         SetAnimationState();
 
+
+        HP_Bar.updateHPBar(recentHP, maxHP);
 
     }
 
@@ -164,8 +167,9 @@ public class Cat : MonoBehaviour
 
     public void OnDamaged(float Damage)
     {
-        Debug.Log(recentHP);
+        
         recentHP -= Damage;
+        //Debug.Log(recentHP);
 
         if (recentHP <= 0)
         {
@@ -215,7 +219,7 @@ public class Cat : MonoBehaviour
 
     IEnumerator Respawn(float seconds)
     {
-        recentHP = 100;
+        recentHP = 300;
         isDead = false;
 
         yield return new WaitForSeconds(seconds);
