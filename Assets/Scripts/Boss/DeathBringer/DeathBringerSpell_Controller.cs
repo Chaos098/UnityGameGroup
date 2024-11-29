@@ -17,11 +17,11 @@ public class DeathBringerSpell_Controller : MonoBehaviour
 
         foreach (var hit in colliders)
         {
-            if (hit.GetComponent<Cat>() != null)
+            if (hit.GetComponent<PlayerMove>() != null)
             {
                 //hit.GetComponent<Entity>().SetupKnockbackDir(transform);
                 //myStats.DoDamage(hit.GetComponent<PlayerStats>());
-                hit.GetComponent<Cat>().OnDamaged(myStats.strength);
+                hit.GetComponent<PlayerMove>().OnDamaged(myStats.strength);
             }
         }
     }

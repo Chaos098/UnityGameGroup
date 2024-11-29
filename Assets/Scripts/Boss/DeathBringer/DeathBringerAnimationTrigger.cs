@@ -18,9 +18,9 @@ public class DeathBringerAnimationTrigger : MonoBehaviour
 
         foreach (var hit in colliders)
         {
-            if (hit.GetComponent<Cat>() != null)
+            if (hit.GetComponent<PlayerMove>() != null)
             {
-                Cat target = hit.GetComponent<Cat>();
+                PlayerMove target = hit.GetComponent<PlayerMove>();
                 target.OnDamaged(30);
             }
         }

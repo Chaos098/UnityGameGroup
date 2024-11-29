@@ -117,7 +117,7 @@ public class DeathBringerBoss : Boss
 
     public void CastSpell()
     {
-        Cat player = PlayerManager.instance.player;
+        PlayerMove player = PlayerManager.instance.player;
 
         float xOffset = 0;
 
@@ -140,7 +140,7 @@ public class DeathBringerBoss : Boss
 
         if (hit != null)
         {
-            Cat player = hit.GetComponent<Cat>();
+            PlayerMove player = hit.GetComponent<PlayerMove>();
             if (player != null)
             {
                 player.OnDamaged(damageAmount);

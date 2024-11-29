@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EntityFX : MonoBehaviour
 {
-    protected Cat player;
+    protected PlayerMove player;
     protected SpriteRenderer sr;
 
 

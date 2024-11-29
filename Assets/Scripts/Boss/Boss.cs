@@ -31,7 +31,7 @@ public class Boss : Entity
 
     public BossStateMachine stateMachine { get; private set; }
     public EntityFX fx { get; private set; }
-    private Cat player;
+    private PlayerMove player;
     public string lastAnimBoolName { get; private set; }
     protected override void Awake()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class LadderDetector : MonoBehaviour
 {
     [SerializeField]
-    private Cat player;
+    private PlayerMove player;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

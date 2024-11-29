@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
-    public Cat player;
+    public PlayerMove player;
 
     public int currency;
     private void Awake()
